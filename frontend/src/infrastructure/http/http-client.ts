@@ -44,7 +44,7 @@ export class HttpClient {
     if (init.body !== undefined) headers["Content-Type"] = "application/json";
     if (authenticated && session) headers.Authorization = `Bearer ${session.accessToken}`;
 
-    const response = await this.fetcher(`${this.baseUrl}${path}`, { ...init, headers });
+    const response = await this.fetcher.call(globalThis, `${this.baseUrl}${path}`, { ...init, headers });
     if (response.status === 401 && authenticated && canRetry && session) {
       await this.refresh(session.refreshToken);
       return this.request<T>(path, init, authenticated, false);
@@ -63,7 +63,7 @@ export class HttpClient {
   }
 
   private async performRefresh(refreshToken: string): Promise<Session> {
-    const response = await this.fetcher(`${this.baseUrl}/auth/refresh`, {
+    const response = await this.fetcher.call(globalThis, `${this.baseUrl}/auth/refresh`, {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken }),

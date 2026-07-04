@@ -38,6 +38,16 @@ describe("HttpClient", () => {
     }));
   });
 
+  it("invokes browser fetch with the global window context", async () => {
+    const browserFetch = function (this: unknown) {
+      if (this !== globalThis) throw new TypeError("Illegal invocation");
+      return Promise.resolve(jsonResponse(200, { success: true, data: { ok: true } }));
+    } as unknown as typeof fetch;
+    const client = new HttpClient("/api", store, browserFetch);
+
+    await expect(client.get("/health")).resolves.toEqual({ ok: true });
+  });
+
   it("maps backend validation errors", async () => {
     fetcher.mockResolvedValue(jsonResponse(400, {
       success: false,
