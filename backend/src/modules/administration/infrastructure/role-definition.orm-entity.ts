@@ -1,0 +1,1 @@
+import { Column,Entity,PrimaryColumn,UpdateDateColumn } from "typeorm";@Entity("role_definitions")export class RoleDefinitionOrmEntity{@PrimaryColumn({length:30})code:string;@Column({length:100})name:string;@Column({type:"jsonb"})permissions:string[];@UpdateDateColumn({name:"updated_at",type:"timestamptz"})updatedAt:Date;}

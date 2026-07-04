@@ -1,0 +1,1 @@
+import { Injectable } from "@nestjs/common";import * as bcrypt from "bcryptjs";import { PasswordHashPort } from "../application/administration.port";@Injectable()export class BcryptPasswordHashAdapter implements PasswordHashPort{hash(value:string){return bcrypt.hash(value,12);}}

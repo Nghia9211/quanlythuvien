@@ -1,0 +1,4 @@
+import { BadRequestException } from "@nestjs/common";
+import { BillingError } from "../../application/errors/billing.error";
+import { BillingController } from "./billing.controller";
+describe("BillingController",()=>{const uc=()=>({execute:async()=>({ok:true})});it("uses authenticated reader ownership",async()=>{let args:any[]=[];const c=new BillingController(uc() as any,{execute:async(...x:any[])=>{args=x;return[];}} as any,uc() as any,uc() as any,uc() as any);await c.listFines("reader-1",{role:"reader",readerId:"reader-1"});expect(args).toEqual(["reader-1","reader-1"]);});it("maps billing errors",async()=>{const bad={execute:async()=>{throw new BillingError("bad");}};const c=new BillingController(bad as any,uc() as any,uc() as any,uc() as any,uc() as any);await expect(c.calculate({loanItemId:"x"},{id:"staff"})).rejects.toBeInstanceOf(BadRequestException);});});

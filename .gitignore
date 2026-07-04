@@ -2,11 +2,12 @@
 .env
 .env.local
 .env.*.local
-
+docs
 # Node
 node_modules/
 dist/
 build/
+backups/
 
 # Docker volumes (local)
 postgres_data/

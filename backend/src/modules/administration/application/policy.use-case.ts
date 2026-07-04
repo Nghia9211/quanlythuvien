@@ -1,0 +1,4 @@
+import { AdministrationError } from "./administration.use-cases";
+export interface PolicyManagementPort{activate(group:string,values:Record<string,number>,actorId:string):Promise<void>}
+const fields:Record<string,string[]>={loan:["maxActiveItems","loanDays","maxRenewals","renewalDays"],reservation:["maxActiveReservations","holdHours"],fine:["overduePerDay","damagedAmount","lostAmount"]};
+export class UpdatePolicyUseCase{constructor(private port:PolicyManagementPort){}async execute(c:{actorId:string;group:string;values:Record<string,number>}){const required=fields[c.group];if(!required)throw new AdministrationError("Unsupported policy group");if(required.some(k=>!Number.isInteger(c.values[k])||(k==="maxRenewals"?c.values[k]<0:c.values[k]<=0)))throw new AdministrationError("Policy values must be positive integers");const values=Object.fromEntries(required.map(k=>[k,c.values[k]]));await this.port.activate(c.group,values,c.actorId);return{group:c.group,values};}}

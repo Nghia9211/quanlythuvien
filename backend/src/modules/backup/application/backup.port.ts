@@ -1,0 +1,1 @@
+export interface BackupJob{id:string;operation:"BACKUP"|"RESTORE";status:"PENDING"|"SUCCEEDED"|"FAILED";filePath:string;sourceBackupId?:string|null;error?:string|null;createdAt:Date;completedAt?:Date|null}export interface BackupPort{create(actorId:string):Promise<BackupJob>;list():Promise<BackupJob[]>;restore(backupId:string,actorId:string):Promise<BackupJob>}

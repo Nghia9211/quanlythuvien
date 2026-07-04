@@ -1,0 +1,1 @@
+export class InventoryError extends Error{constructor(message:string){super(message);this.name="InventoryError";}}export class InventoryNotFoundError extends InventoryError{constructor(message:string){super(message);this.name="InventoryNotFoundError";}}

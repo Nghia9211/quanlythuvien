@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env', quiet: true });
 
 /**
  * DataSource dành riêng cho TypeORM CLI (migration:generate, migration:run).
@@ -10,7 +10,7 @@ dotenv.config({ path: '.env' });
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT, 10) || 5432,
+  port: parseInt(process.env.DB_PORT ?? '5432', 10),
   username: process.env.DB_USER || 'dgm_user',
   password: process.env.DB_PASSWORD || 'dgm_password',
   database: process.env.DB_NAME || 'dgm_library',

@@ -1,0 +1,1 @@
+export interface OperationalReport{loans:number;overdueItems:number;availableCopies:number;unpaidFineAmount:number;completedInventories:number}export interface ReportingQueryPort{getOperationalSummary(filter:{from:Date;to:Date;branchId?:string}):Promise<OperationalReport>}
