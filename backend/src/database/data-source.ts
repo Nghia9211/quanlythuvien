@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.env', quiet: true });
+dotenv.config({ path: '.env' });
 
 /**
  * DataSource dành riêng cho TypeORM CLI (migration:generate, migration:run).

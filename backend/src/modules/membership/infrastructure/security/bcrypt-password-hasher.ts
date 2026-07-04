@@ -1,5 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional, Inject } from "@nestjs/common";
 import { hash } from "bcryptjs";
+
+export const BCRYPT_ROUNDS = Symbol("BCRYPT_ROUNDS");
 
 export interface PasswordHasher {
   hash(password: string): Promise<string>;
@@ -7,7 +9,7 @@ export interface PasswordHasher {
 
 @Injectable()
 export class BcryptPasswordHasher implements PasswordHasher {
-  constructor(private readonly rounds = 12) {}
+  constructor(@Optional() @Inject(BCRYPT_ROUNDS) private readonly rounds: number = 12) {}
 
   hash(password: string): Promise<string> {
     return hash(password, this.rounds);

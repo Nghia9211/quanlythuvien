@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
-dotenv.config({ quiet: true });
+dotenv.config();
 
 export default new DataSource({
   type: 'postgres',

@@ -32,7 +32,8 @@ async function bootstrap() {
       .setTitle("DGM Library API")
       .setDescription("Hệ thống quản lý thư viện DGM")
       .setVersion("1.0")
-      .addBearerAuth()
+      .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
+      .addSecurityRequirements('access-token')
       .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup("api/docs", app, document);

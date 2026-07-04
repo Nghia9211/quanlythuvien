@@ -14,6 +14,12 @@ export class RolesGuard implements CanActivate {
     ]);
     if (!requiredRoles) return true;
     const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some((role) => user?.role === role);
+    if (!user?.role) return false;
+    // Normalize role to lowercase for case-insensitive comparison
+    // (DB may store ADMIN/STAFF/READER in uppercase)
+    const userRoleLower = user.role.toLowerCase() as Role;
+    // ADMIN has superuser privileges — can access all STAFF and READER endpoints
+    if (userRoleLower === Role.ADMIN) return true;
+    return requiredRoles.some((role) => userRoleLower === role);
   }
 }
