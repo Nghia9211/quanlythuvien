@@ -13,6 +13,8 @@ backups/
 postgres_data/
 
 # IDE
+.superpowers/
+.worktrees/
 .vscode/
 .idea/
 *.swp
