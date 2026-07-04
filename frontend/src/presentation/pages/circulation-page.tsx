@@ -4,6 +4,7 @@ import { useServices } from "../app/services-context";
 import { DataTable } from "../components/data-table";
 import { FormField } from "../components/form-field";
 import { StatusBadge } from "../components/status-badge";
+import { Toast } from "../components/toast";
 
 export function CirculationPage() {
   const services = useServices();
@@ -44,7 +45,7 @@ export function CirculationPage() {
   return (
     <section><div className="page-heading"><div><p className="eyebrow">Circulation</p><h1>Mượn và trả sách</h1></div></div>
       <div className="tabs"><button className={tab === "borrow" ? "active" : ""} onClick={() => setTab("borrow")}>Mượn sách</button><button className={tab === "return" ? "active" : ""} onClick={() => setTab("return")}>Trả sách</button><button className={tab === "lookup" ? "active" : ""} onClick={() => setTab("lookup")}>Tra cứu khoản mượn</button></div>
-      {error && <p className="form-error" role="alert">{error}</p>}{message && <p className="success-message" role="status">{message}</p>}
+      {error && <Toast message={error} tone="error" />}{message && <Toast message={message} />}
       {tab === "borrow" && <form className="panel form-grid" onSubmit={borrow}><FormField label="Số thẻ"><input value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} /></FormField><FormField label="Mã bản sao" hint="Mỗi dòng một mã"><textarea aria-label="Mã bản sao" value={barcodeText} onChange={(e) => setBarcodeText(e.target.value)} /></FormField><div className="form-actions"><button disabled={pending}>Xác nhận mượn</button></div></form>}
       {tab === "return" && <form className="panel" onSubmit={returnBooks}><div className="return-lines">{returns.map((line, index) => <div className="return-line" key={index}><FormField label={`Mã bản sao trả ${index + 1}`}><input value={line.barcode} onChange={(e) => setReturn(index, "barcode", e.target.value)} /></FormField><FormField label={`Tình trạng trả ${index + 1}`}><select value={line.condition} onChange={(e) => setReturn(index, "condition", e.target.value as ReturnCondition)}><option value="NORMAL">Bình thường</option><option value="DAMAGED">Hư hỏng</option><option value="LOST">Thất lạc</option></select></FormField>{returns.length > 1 && <button type="button" className="button-link" onClick={() => setReturns((current) => current.filter((_, position) => position !== index))}>Xóa dòng</button>}</div>)}</div><div className="button-row"><button type="button" className="button-secondary" onClick={() => setReturns((current) => [...current, { barcode: "", condition: "NORMAL" }])}>Thêm sách</button><button disabled={pending}>Xác nhận trả</button></div></form>}
       {tab === "lookup" && <form className="panel inline-form" onSubmit={lookup}><FormField label="ID độc giả"><input value={readerId} onChange={(e) => setReaderId(e.target.value)} /></FormField><button disabled={pending}>Tra cứu khoản mượn</button></form>}

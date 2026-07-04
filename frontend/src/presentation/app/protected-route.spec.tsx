@@ -15,7 +15,7 @@ describe("ProtectedRoute", () => {
     vi.mocked(services.restoreSession.execute).mockReturnValue(new Promise((resolve) => { finish = resolve; }));
 
     render(
-      <MemoryRouter initialEntries={["/dashboard"]}>
+      <MemoryRouter initialEntries={["/dashboard"]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ServicesProvider services={services}>
           <AuthProvider>
             <Location />

@@ -12,7 +12,7 @@ const staff: User = { id: "user-1", readerId: null, username: "staff", role: "ST
 
 function renderLogin(services = createTestServices()) {
   render(
-    <MemoryRouter initialEntries={["/login"]}>
+    <MemoryRouter initialEntries={["/login"]} future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <ServicesProvider services={services}>
         <AuthProvider>
           <Routes>

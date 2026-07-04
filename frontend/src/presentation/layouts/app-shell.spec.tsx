@@ -14,7 +14,7 @@ describe("AppShell", () => {
       id: "user-1", readerId: null, username: "staff", role: "STAFF",
     });
     render(
-      <MemoryRouter>
+      <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ServicesProvider services={services}>
           <AuthProvider><AppShell /></AuthProvider>
         </ServicesProvider>

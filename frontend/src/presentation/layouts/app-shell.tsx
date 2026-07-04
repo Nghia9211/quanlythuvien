@@ -15,7 +15,7 @@ export function AppShell() {
       <aside className="sidebar">
         <div className="brand"><span>DGM</span><strong>Library</strong></div>
         <nav aria-label="Nghiệp vụ thư viện">
-          {links.map(([to, label, number]) => <NavLink key={to} to={to}><small aria-hidden="true">{number}</small>{label}</NavLink>)}
+          {links.map(([to, label, number]) => <NavLink key={to} to={to}><small aria-hidden="true">{number}</small><span>{label}</span></NavLink>)}
         </nav>
         <div className="sidebar-footer"><span>{user ? `${user.username} · ${user.role}` : "Đang tải…"}</span><button onClick={() => void logout()}>Đăng xuất</button></div>
       </aside>
