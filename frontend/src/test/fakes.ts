@@ -29,5 +29,9 @@ export function createTestServices(): AppServices {
     createCatalogShelf: { execute: vi.fn() },
     createCatalogCopy: { execute: vi.fn() },
     updateCatalogCopy: { execute: vi.fn() },
+    listReaderFines: { execute: vi.fn().mockResolvedValue([]) },
+    listReaderPayments: { execute: vi.fn().mockResolvedValue([]) },
+    createPayment: { execute: vi.fn() },
+    simulatePayment: { execute: vi.fn() },
   };
 }

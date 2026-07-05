@@ -1,5 +1,6 @@
 import type { AppServices } from "../application/services";
 import { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "../application/use-cases/auth.use-cases";
+import { CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "../application/use-cases/billing.use-cases";
 import { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "../application/use-cases/catalog.use-cases";
 import {
   AllocateReservationUseCase,
@@ -16,6 +17,7 @@ import {
   UpdateReaderUseCase,
 } from "../application/use-cases/library.use-cases";
 import { HttpAuthGateway } from "../infrastructure/adapters/http-auth.gateway";
+import { HttpBillingGateway } from "../infrastructure/adapters/http-billing.gateway";
 import { HttpCatalogGateway } from "../infrastructure/adapters/http-catalog.gateway";
 import { HttpCirculationGateway } from "../infrastructure/adapters/http-circulation.gateway";
 import { HttpReadersGateway } from "../infrastructure/adapters/http-readers.gateway";
@@ -33,6 +35,7 @@ export function createServices(baseUrl = "/api"): AppServices {
   const circulation = new HttpCirculationGateway(client);
   const reservations = new HttpReservationsGateway(client);
   const catalog = new HttpCatalogGateway(client);
+  const billing = new HttpBillingGateway(client);
 
   return {
     sessions,
@@ -61,5 +64,9 @@ export function createServices(baseUrl = "/api"): AppServices {
     createCatalogShelf: new CreateCatalogShelfUseCase(catalog),
     createCatalogCopy: new CreateCopyUseCase(catalog),
     updateCatalogCopy: new UpdateCopyUseCase(catalog),
+    listReaderFines: new ListReaderFinesUseCase(billing),
+    listReaderPayments: new ListReaderPaymentsUseCase(billing),
+    createPayment: new CreatePaymentUseCase(billing),
+    simulatePayment: new SimulatePaymentUseCase(billing),
   };
 }

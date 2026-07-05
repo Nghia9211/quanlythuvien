@@ -1,5 +1,6 @@
 import type { SessionStore } from "./ports/auth.gateway";
 import type { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "./use-cases/auth.use-cases";
+import type { CreatePaymentUseCase, ListReaderFinesUseCase, ListReaderPaymentsUseCase, SimulatePaymentUseCase } from "./use-cases/billing.use-cases";
 import type { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "./use-cases/catalog.use-cases";
 import type {
   AllocateReservationUseCase,
@@ -43,4 +44,8 @@ export interface AppServices {
   createCatalogShelf: Pick<CreateCatalogShelfUseCase, "execute">;
   createCatalogCopy: Pick<CreateCopyUseCase, "execute">;
   updateCatalogCopy: Pick<UpdateCopyUseCase, "execute">;
+  listReaderFines: Pick<ListReaderFinesUseCase, "execute">;
+  listReaderPayments: Pick<ListReaderPaymentsUseCase, "execute">;
+  createPayment: Pick<CreatePaymentUseCase, "execute">;
+  simulatePayment: Pick<SimulatePaymentUseCase, "execute">;
 }
