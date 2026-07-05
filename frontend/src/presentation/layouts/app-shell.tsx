@@ -3,9 +3,10 @@ import { useAuth } from "../app/auth-context";
 
 const links = [
   ["/dashboard", "Tổng quan", "01"],
-  ["/readers", "Độc giả", "02"],
-  ["/circulation", "Mượn / trả", "03"],
-  ["/reservations", "Đặt chỗ", "04"],
+  ["/catalog", "Catalog", "02"],
+  ["/readers", "Độc giả", "03"],
+  ["/circulation", "Mượn / trả", "04"],
+  ["/reservations", "Đặt chỗ", "05"],
 ] as const;
 
 export function AppShell() {

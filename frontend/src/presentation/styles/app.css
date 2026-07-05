@@ -92,6 +92,8 @@ th { color: var(--muted); background: #f8f6f1; font-size: 0.72rem; letter-spacin
 .return-lines { display: grid; gap: 0.9rem; }.return-line { display: grid; grid-template-columns: 1fr 240px auto; align-items: end; gap: 0.8rem; }
 .form-error, .toast--error { color: var(--red); }.success-message, .toast--success { color: var(--green); }
 .toast { margin: 1rem 0; padding: 0.85rem 1rem; border-radius: 9px; background: var(--paper); box-shadow: var(--shadow); font-weight: 700; }
+.active-selection { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.7rem; margin: 1rem 0; padding: 0.9rem 1rem; border-left: 4px solid var(--accent); border-radius: 8px; background: var(--paper); }
+.active-selection span, .active-selection small { color: var(--muted); }.catalog-results { display: grid; gap: 0.8rem; }.catalog-card { display: flex; justify-content: space-between; gap: 1rem; padding: 1.2rem; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }.catalog-card h2 { margin-bottom: 0.35rem; }.pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 1.2rem 0; }.compact-list { margin: 1rem 0 0; padding: 0; list-style: none; }.compact-list li { padding: 0.5rem 0; border-bottom: 1px solid var(--line); }
 
 .dialog-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 1rem; background: rgba(7, 22, 34, 0.62); }
 .dialog { width: min(480px, 100%); padding: 1.5rem; border-radius: 14px; background: var(--paper); box-shadow: var(--shadow); }
