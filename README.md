@@ -49,15 +49,17 @@ backend/src/
 │   ├── interceptors/ # ResponseInterceptor
 │   └── pipes/       # ValidationPipe config
 ├── modules/
-│   ├── auth/        # JWT Auth
+│   ├── identity/    # JWT Auth
 │   ├── catalog/     # Quản lý sách
 │   ├── membership/  # Thành viên
 │   ├── circulation/ # Mượn/trả
 │   ├── reservation/ # Đặt trước
-│   ├── inventory/   # Kho sách
-│   ├── fine/        # Phạt quá hạn
-│   └── notification/ # Email/SMS
-└── migrations/      # TypeORM migrations
+│   ├── billing/     # Phí phạt và thanh toán
+│   ├── inventory/   # Kiểm kê và trạng thái bản sao
+│   ├── reporting/   # Báo cáo vận hành
+│   ├── administration/ # Staff, RBAC, policy, audit
+│   └── backup/      # PostgreSQL backup/restore
+└── database/migrations/ # TypeORM migrations
 ```
 
 ## Lệnh hữu ích
@@ -69,3 +71,8 @@ make migrate         # Chạy migration
 make migration name=CreateUserTable  # Tạo migration mới
 make reset-db        # Reset DB (cẩn thận!)
 ```
+
+Docker Compose tự chạy migration trước khi khởi động backend. Chức năng backup cần
+`pg_dump`/`pg_restore`; các công cụ này đã được cài trong backend image. Khi chạy
+backend trực tiếp ngoài Docker, cần cài PostgreSQL client và có thể cấu hình
+`BACKUP_DIR` trong `.env`.

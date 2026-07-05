@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ScheduleModule } from "@nestjs/schedule";
-import { join } from "path";
 import appConfig from "./config/app.config";
 import databaseConfig from "./config/database.config";
 import jwtConfig from "./config/jwt.config";
@@ -16,6 +15,7 @@ import { InventoryModule } from "./modules/inventory/inventory.module";
 import { ReportingModule } from "./modules/reporting/reporting.module";
 import { AdministrationModule } from "./modules/administration/administration.module";
 import { BackupModule } from "./modules/backup/backup.module";
+import { buildTypeOrmOptions } from "./config/typeorm-module.options";
 
 @Module({
   imports: [
@@ -29,19 +29,7 @@ import { BackupModule } from "./modules/backup/backup.module";
     // TypeORM - kết nối PostgreSQL
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: "postgres",
-        host: config.get("database.host"),
-        port: config.get<number>("database.port"),
-        database: config.get("database.name"),
-        username: config.get("database.user"),
-        password: config.get("database.password"),
-        entities: [join(__dirname, "**", "*.entity.{ts,js}")],
-        migrations: [join(__dirname, "database", "migrations", "*.{ts,js}")],
-        synchronize: config.get("app.nodeEnv") === "development", // CHỈ dùng dev!
-        logging: config.get("app.nodeEnv") === "development",
-        autoLoadEntities: true,
-      }),
+      useFactory: buildTypeOrmOptions,
     }),
 
     // Scheduler - dùng cho @Cron (tính phí quá hạn, etc.)
@@ -58,9 +46,6 @@ import { BackupModule } from "./modules/backup/backup.module";
     AdministrationModule,
     BackupModule,
 
-    // TODO: import các feature modules ở đây
-    // AuthModule,
-    // MembershipModule,
   ],
 })
 export class AppModule {}
