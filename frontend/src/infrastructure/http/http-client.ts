@@ -7,6 +7,7 @@ interface ApiEnvelope<T> {
   data: T;
   message?: string;
   errors?: string[] | null;
+  meta?: unknown;
 }
 
 export class HttpClient {
@@ -20,6 +21,11 @@ export class HttpClient {
 
   get<T>(path: string, authenticated = true): Promise<T> {
     return this.request<T>(path, { method: "GET" }, authenticated);
+  }
+
+  async getResponse<T, M = unknown>(path: string, authenticated = true): Promise<{ data: T; meta?: M }> {
+    const envelope = await this.requestEnvelope<T, M>(path, { method: "GET" }, authenticated);
+    return { data: envelope.data, meta: envelope.meta };
   }
 
   post<T>(path: string, body?: unknown, authenticated = true): Promise<T> {
@@ -39,6 +45,10 @@ export class HttpClient {
     authenticated: boolean,
     canRetry = true,
   ): Promise<T> {
+    return (await this.requestEnvelope<T, unknown>(path, init, authenticated, canRetry)).data;
+  }
+
+  private async requestEnvelope<T, M>(path: string, init: RequestInit, authenticated: boolean, canRetry = true): Promise<ApiEnvelope<T> & { meta?: M }> {
     const session = this.sessions.get();
     const headers: Record<string, string> = { Accept: "application/json" };
     if (init.body !== undefined) headers["Content-Type"] = "application/json";
@@ -47,10 +57,10 @@ export class HttpClient {
     const response = await this.fetcher.call(globalThis, `${this.baseUrl}${path}`, { ...init, headers });
     if (response.status === 401 && authenticated && canRetry && session) {
       await this.refresh(session.refreshToken);
-      return this.request<T>(path, init, authenticated, false);
+      return this.requestEnvelope<T, M>(path, init, authenticated, false);
     }
 
-    return this.read<T>(response);
+    return this.readEnvelope<T, M>(response);
   }
 
   private async refresh(refreshToken: string): Promise<Session> {
@@ -69,7 +79,7 @@ export class HttpClient {
       body: JSON.stringify({ refreshToken }),
     });
     try {
-      const session = await this.read<Session>(response);
+      const session = (await this.readEnvelope<Session, unknown>(response)).data;
       this.sessions.save(session);
       return session;
     } catch (error) {
@@ -78,12 +88,12 @@ export class HttpClient {
     }
   }
 
-  private async read<T>(response: Response): Promise<T> {
+  private async readEnvelope<T, M>(response: Response): Promise<ApiEnvelope<T> & { meta?: M }> {
     let payload: ApiEnvelope<T> | undefined;
     try {
       payload = await response.json() as ApiEnvelope<T>;
     } catch {
-      if (response.ok) return undefined as T;
+      if (response.ok) return { success: true, data: undefined as T };
     }
     if (!response.ok || !payload?.success) {
       const messages = payload?.errors?.length
@@ -91,6 +101,6 @@ export class HttpClient {
         : [payload?.message || "Không thể kết nối đến máy chủ"];
       throw new ApiError(response.status, messages);
     }
-    return payload.data;
+    return payload as ApiEnvelope<T> & { meta?: M };
   }
 }

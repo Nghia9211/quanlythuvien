@@ -61,6 +61,18 @@ describe("HttpClient", () => {
     expect(error).toMatchObject({ status: 400, messages: ["email must be an email"] });
   });
 
+  it("retains response metadata when requested", async () => {
+    fetcher.mockResolvedValue(jsonResponse(200, {
+      success: true,
+      data: [{ id: "title-1" }],
+      meta: { page: 1, total: 1 },
+    }));
+    const client = new HttpClient("/api", store, fetcher);
+    await expect(client.getResponse("/catalog?query=clean", false)).resolves.toEqual({
+      data: [{ id: "title-1" }], meta: { page: 1, total: 1 },
+    });
+  });
+
   it("refreshes once and retries the protected request", async () => {
     const refreshed = { ...session, accessToken: "new-access", refreshToken: "new-refresh" };
     fetcher

@@ -19,5 +19,15 @@ export function createTestServices(): AppServices {
     listReservations: { execute: vi.fn() },
     cancelReservation: { execute: vi.fn() },
     allocateReservation: { execute: vi.fn() },
+    searchCatalog: { execute: vi.fn() },
+    listCatalogBranches: { execute: vi.fn().mockResolvedValue([]) },
+    listCatalogShelves: { execute: vi.fn().mockResolvedValue([]) },
+    listCatalogCopies: { execute: vi.fn().mockResolvedValue([]) },
+    createCatalogTitle: { execute: vi.fn() },
+    updateCatalogTitle: { execute: vi.fn() },
+    createCatalogBranch: { execute: vi.fn() },
+    createCatalogShelf: { execute: vi.fn() },
+    createCatalogCopy: { execute: vi.fn() },
+    updateCatalogCopy: { execute: vi.fn() },
   };
 }

@@ -1,5 +1,6 @@
 import type { SessionStore } from "./ports/auth.gateway";
 import type { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "./use-cases/auth.use-cases";
+import type { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "./use-cases/catalog.use-cases";
 import type {
   AllocateReservationUseCase,
   BorrowBooksUseCase,
@@ -32,4 +33,14 @@ export interface AppServices {
   listReservations: Pick<ListReservationsUseCase, "execute">;
   cancelReservation: Pick<CancelReservationUseCase, "execute">;
   allocateReservation: Pick<AllocateReservationUseCase, "execute">;
+  searchCatalog: Pick<SearchCatalogUseCase, "execute">;
+  listCatalogBranches: Pick<ListCatalogBranchesUseCase, "execute">;
+  listCatalogShelves: Pick<ListCatalogShelvesUseCase, "execute">;
+  listCatalogCopies: Pick<ListCatalogCopiesUseCase, "execute">;
+  createCatalogTitle: Pick<CreateCatalogTitleUseCase, "execute">;
+  updateCatalogTitle: Pick<UpdateCatalogTitleUseCase, "execute">;
+  createCatalogBranch: Pick<CreateCatalogBranchUseCase, "execute">;
+  createCatalogShelf: Pick<CreateCatalogShelfUseCase, "execute">;
+  createCatalogCopy: Pick<CreateCopyUseCase, "execute">;
+  updateCatalogCopy: Pick<UpdateCopyUseCase, "execute">;
 }

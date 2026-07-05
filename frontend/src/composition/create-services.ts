@@ -1,5 +1,6 @@
 import type { AppServices } from "../application/services";
 import { LoginUseCase, LogoutUseCase, RestoreSessionUseCase } from "../application/use-cases/auth.use-cases";
+import { CreateCatalogBranchUseCase, CreateCatalogShelfUseCase, CreateCatalogTitleUseCase, CreateCopyUseCase, ListCatalogBranchesUseCase, ListCatalogCopiesUseCase, ListCatalogShelvesUseCase, SearchCatalogUseCase, UpdateCatalogTitleUseCase, UpdateCopyUseCase } from "../application/use-cases/catalog.use-cases";
 import {
   AllocateReservationUseCase,
   BorrowBooksUseCase,
@@ -15,6 +16,7 @@ import {
   UpdateReaderUseCase,
 } from "../application/use-cases/library.use-cases";
 import { HttpAuthGateway } from "../infrastructure/adapters/http-auth.gateway";
+import { HttpCatalogGateway } from "../infrastructure/adapters/http-catalog.gateway";
 import { HttpCirculationGateway } from "../infrastructure/adapters/http-circulation.gateway";
 import { HttpReadersGateway } from "../infrastructure/adapters/http-readers.gateway";
 import { HttpReportingGateway } from "../infrastructure/adapters/http-reporting.gateway";
@@ -30,6 +32,7 @@ export function createServices(baseUrl = "/api"): AppServices {
   const readers = new HttpReadersGateway(client);
   const circulation = new HttpCirculationGateway(client);
   const reservations = new HttpReservationsGateway(client);
+  const catalog = new HttpCatalogGateway(client);
 
   return {
     sessions,
@@ -48,5 +51,15 @@ export function createServices(baseUrl = "/api"): AppServices {
     listReservations: new ListReservationsUseCase(reservations),
     cancelReservation: new CancelReservationUseCase(reservations),
     allocateReservation: new AllocateReservationUseCase(reservations),
+    searchCatalog: new SearchCatalogUseCase(catalog),
+    listCatalogBranches: new ListCatalogBranchesUseCase(catalog),
+    listCatalogShelves: new ListCatalogShelvesUseCase(catalog),
+    listCatalogCopies: new ListCatalogCopiesUseCase(catalog),
+    createCatalogTitle: new CreateCatalogTitleUseCase(catalog),
+    updateCatalogTitle: new UpdateCatalogTitleUseCase(catalog),
+    createCatalogBranch: new CreateCatalogBranchUseCase(catalog),
+    createCatalogShelf: new CreateCatalogShelfUseCase(catalog),
+    createCatalogCopy: new CreateCopyUseCase(catalog),
+    updateCatalogCopy: new UpdateCopyUseCase(catalog),
   };
 }
